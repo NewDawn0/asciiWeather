@@ -6,11 +6,13 @@
 #include <stddef.h>
 #include <unistd.h>
 
-WeatherTypes weather = Rain;
+WeatherTypes weather;
 
-int main(void) {
+int main(int argc, char **argv) {
+  parseArgs(&weather, argc, argv);
   Display main = newDisplay();
   main.init();
   main.loop();
   main.exit();
+  printf("%d\n", COLORS);
 }
