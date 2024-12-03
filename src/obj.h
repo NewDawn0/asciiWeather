@@ -11,7 +11,7 @@ typedef struct obj_t {
   void (*shift)(struct obj_t *, bool);
 } Obj;
 
-Obj newObj();
+Obj newObj(char repr, short col, int forceX, int forceY);
 void initExternCfg();
 
 #endif // !OBJ_H

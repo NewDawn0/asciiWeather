@@ -28,7 +28,7 @@ void rainContainerInit(RainContainer *self) {
     exit(EXIT_FAILURE);
   }
   for (size_t i = 0; i < self->size; i++) {
-    self->drops[i] = newObj();
+    self->drops[i] = newObj(':', 2, 1, 0);
   }
 }
 
@@ -38,7 +38,7 @@ void rainContainerExit(RainContainer *self) {
   self->size = 0;
 }
 
-// Emtpy since rain doesn't need to print something on first run
+// Empty since rain doesn't need to print something on first run
 void rainContainerShow(RainContainer *self) {}
 
 void rainContainerRun(RainContainer *self) {

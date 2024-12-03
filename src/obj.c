@@ -18,39 +18,21 @@ void initExternCfg() {
   SNOW_CHARS = snowChars();
 }
 
-Obj newObj() {
+Obj newObj(char repr, short col, int forceX, int forceY) {
   int typeRepr = randRange(1, 3); // Set type representation
   Obj out = {
       .x = randRange(0, getmaxx(stdscr) - 1),
       .y = randRange(0, getmaxy(stdscr) - 1),
-      .forceX = 0, // No x force
+      .origY = 0,
+      // @FIX: I don't know why but forceX and forceY need to be switched
+      .forceX = forceY,
+      .forceY = forceX,
+      .col = col,
+      .repr = repr,
       .show = objShow,
       .shift = objShift,
   };
-  switch (weather) {
-  case Rain:
-    out.repr = (typeRepr < 2) ? RAIN_CHARS[0] : RAIN_CHARS[1];
-    out.col = (randRange(1, 4) < 2) ? RAIN_COLS[0] : RAIN_COLS[1];
-    // Different speeds for different drops
-    if (typeRepr < 2) {
-      out.forceY = 1;
-    } else {
-      out.forceY = randRange(1, 3);
-    }
-    break;
-  case Snow:
-    out.repr = (typeRepr < 2) ? SNOW_CHARS[0] : SNOW_CHARS[1];
-    out.col = SNOW_COLS;
-    // Different speeds for different drops
-    if (typeRepr < 2) {
-      out.forceY = 1;
-    } else {
-      out.forceY = randRange(1, 3);
-    }
-    break;
-  }
   out.origX = out.x;
-  out.origY = 0;
   return out;
 }
 
