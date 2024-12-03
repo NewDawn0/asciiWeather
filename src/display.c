@@ -1,4 +1,5 @@
 #include "display.h"
+#include "obj.h"
 #include <curses.h>
 #include <stdlib.h>
 #include <time.h>
@@ -16,6 +17,7 @@ Display newDisplay() {
 
 void displayInit() {
   srand(time(NULL));
+  initExternCfg();
   initscr();
   noecho();
   cbreak();
