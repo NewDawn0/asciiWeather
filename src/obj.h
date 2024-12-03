@@ -9,5 +9,6 @@ typedef struct obj_t {
 } Obj;
 
 Obj newObj();
+void initExternCfg();
 
 #endif // !OBJ_H

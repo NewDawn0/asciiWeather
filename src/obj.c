@@ -1,9 +1,19 @@
 #include "obj.h"
+#include "config.h"
 #include "util.h"
 #include <curses.h>
 
 void objShow(Obj *self);
 void objShift(Obj *self);
+
+const char *RAIN_CHARS;
+const short *RAIN_COLS;
+extern WeatherTypes weatherType;
+
+void initExternCfg() {
+  RAIN_CHARS = rainChars();
+  RAIN_COLS = rainCols();
+}
 
 Obj newObj() {
   Obj out = {
