@@ -37,6 +37,7 @@ void displayInit() {
   // Initialize colours
   init_pair(1, COLOR_CYAN, COLOR_BLACK);
   init_pair(2, COLOR_BLUE, COLOR_BLACK);
+  init_pair(3, COLOR_WHITE, COLOR_BLACK);
 }
 
 void displayExit() {
@@ -59,8 +60,11 @@ void displayLoop() {
     refresh();
     ch = getch();
     switch (ch) {
-    case 'q':
-    case 27:
+    case MENU_OPEN:
+      menu();
+      break;
+    case QUIT_KEY:
+    case QUIT_ESC:
       return;
     }
   }
