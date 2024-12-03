@@ -12,4 +12,12 @@ static inline const short *rainCols() {
   return out;
 }
 
+// Snow
+static inline const char *snowChars() {
+  static const char out[2] = {'*', '.'};
+  return out;
+}
+#define SNOW_COLS 3
+
+
 #endif // !CONFIG_H
