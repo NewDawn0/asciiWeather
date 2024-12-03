@@ -1,5 +1,6 @@
 #include "util.h"
 #include "config.h"
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -24,15 +25,31 @@ void parseArgs(WeatherTypes *weather, int argc, char **argv) {
   if (argc == 1) {
     *weather = Rain; // Default to rain
   } else if (argc == 2) {
-    if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "-h")) {
+    const char *xs[] = {"-h", "--help"};
+    int idx;
+    if (in(argv[1], xs, len(xs)) != -1) {
       help();
       exit(EXIT_SUCCESS);
+    } else if ((idx = in(argv[1], MENU_CHOICES, len(MENU_CHOICES))) != -1) {
+      *weather = idx;
+    } else {
+      printf("%sError:%s Unrecognized argument: %s\n", RED, NC, argv[1]);
+      help();
+      exit(EXIT_FAILURE);
     }
   } else {
     printf("%sError:%s Only one arg was expected\n", RED, NC);
     help();
-    exit(EXIT_SUCCESS);
+    exit(EXIT_FAILURE);
   }
+}
+
+int in(char *x, const char **xs, size_t xsSize) {
+  for (int i = 0; i < xsSize; i++) {
+    if (strcmp(x, xs[i]) == 0)
+      return i;
+  }
+  return -1;
 }
 
 void help() {
