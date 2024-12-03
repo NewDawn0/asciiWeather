@@ -1,6 +1,7 @@
 #include "display.h"
 #include <curses.h>
 #include <stdlib.h>
+#include <time.h>
 
 void displayInit();
 void displayExit();
@@ -14,6 +15,7 @@ Display newDisplay() {
 }
 
 void displayInit() {
+  srand(time(NULL));
   initscr();
   noecho();
   cbreak();
@@ -21,6 +23,9 @@ void displayInit() {
   start_color();
   timeout(100); // 100ms for non blocking getch
   keypad(stdscr, TRUE);
+  // Initialize colours
+  init_pair(1, COLOR_CYAN, COLOR_BLACK);
+  init_pair(2, COLOR_BLUE, COLOR_BLACK);
 }
 
 void displayExit() {
