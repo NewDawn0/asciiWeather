@@ -6,11 +6,13 @@
 
 void displayInit();
 void displayExit();
+void displayLoop();
 
 Display newDisplay() {
   Display out = {
       .init = displayInit,
       .exit = displayExit,
+      .loop = displayLoop,
   };
   return out;
 }
@@ -36,4 +38,28 @@ void displayExit() {
   refresh();
   resetty();
   endwin();
+  printf("Exiting...\n");
+}
+
+void displayLoop() {
+  int ch;
+  int a = getmaxx(stdscr) * 1.2;
+  Obj objs[a];
+  for (size_t i = 0; i < (size_t)a; i++) {
+    objs[i] = newObj();
+  }
+  for (;;) {
+    clear();
+    for (size_t i = 0; i < (size_t)a; i++) {
+      objs[i].show(&objs[i]);
+      objs[i].shift(&objs[i], true);
+    }
+    refresh();
+    ch = getch();
+    switch (ch) {
+    case 'q':
+    case 27:
+      return;
+    }
+  }
 }

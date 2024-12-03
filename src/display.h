@@ -4,6 +4,7 @@
 typedef struct display_t {
   void (*init)();
   void (*exit)();
+  void (*loop)();
 } Display;
 
 Display newDisplay();
