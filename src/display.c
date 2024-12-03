@@ -43,17 +43,12 @@ void displayExit() {
 
 void displayLoop() {
   int ch;
-  int a = getmaxx(stdscr) * 1.2;
-  Obj objs[a];
-  for (size_t i = 0; i < (size_t)a; i++) {
-    objs[i] = newObj();
-  }
+  RainContainer container = newRainContainer();
+  container.init(&container);
+  container.show(&container);
   for (;;) {
     clear();
-    for (size_t i = 0; i < (size_t)a; i++) {
-      objs[i].show(&objs[i]);
-      objs[i].shift(&objs[i], true);
-    }
+    container.run(&container);
     refresh();
     ch = getch();
     switch (ch) {

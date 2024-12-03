@@ -9,11 +9,13 @@ void objShift(Obj *self, bool rand);
 
 const char *RAIN_CHARS;
 const short *RAIN_COLS;
-extern WeatherTypes weatherType;
+const char *SNOW_CHARS;
+extern WeatherTypes weather;
 
 void initExternCfg() {
   RAIN_CHARS = rainChars();
   RAIN_COLS = rainCols();
+  SNOW_CHARS = snowChars();
 }
 
 Obj newObj() {
@@ -25,10 +27,20 @@ Obj newObj() {
       .show = objShow,
       .shift = objShift,
   };
-  switch (weatherType) {
+  switch (weather) {
   case Rain:
     out.repr = (typeRepr < 2) ? RAIN_CHARS[0] : RAIN_CHARS[1];
-    out.col = (randRange(1, 4) < 2) ? 1 : 2;
+    out.col = (randRange(1, 4) < 2) ? RAIN_COLS[0] : RAIN_COLS[1];
+    // Different speeds for different drops
+    if (typeRepr < 2) {
+      out.forceY = 1;
+    } else {
+      out.forceY = randRange(1, 3);
+    }
+    break;
+  case Snow:
+    out.repr = (typeRepr < 2) ? SNOW_CHARS[0] : SNOW_CHARS[1];
+    out.col = SNOW_COLS;
     // Different speeds for different drops
     if (typeRepr < 2) {
       out.forceY = 1;
