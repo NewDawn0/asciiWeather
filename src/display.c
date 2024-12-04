@@ -73,10 +73,12 @@ void displayLoop() {
       break;
     case QUIT_KEY:
     case QUIT_ESC:
-      return;
+      goto loopExit;
     }
   }
+loopExit:
   container->exit(container);
+  return;
 }
 
 void menu() {
