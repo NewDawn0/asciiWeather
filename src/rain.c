@@ -38,6 +38,7 @@ void rainContainerExit(WeatherContainer *self) {
   free(cself->drops);
   cself->drops = NULL;
   cself->size = 0;
+  free(self);
 }
 
 // Empty since rain doesn't need to print something on first run
