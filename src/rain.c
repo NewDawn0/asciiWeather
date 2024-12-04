@@ -1,49 +1,52 @@
 #include "rain.h"
 #include "obj.h"
+#include "weather.h"
 #include <curses.h>
 #include <stddef.h>
 #include <stdlib.h>
 
-void rainContainerInit(RainContainer *self);
-void rainContainerExit(RainContainer *self);
-void rainContainerShow(RainContainer *self);
-void rainContainerRun(RainContainer *self);
+void rainContainerInit(WeatherContainer *self);
+void rainContainerExit(WeatherContainer *self);
+void rainContainerShow(WeatherContainer *self);
+void rainContainerRun(WeatherContainer *self);
 
-RainContainer newRainContainer() {
-  RainContainer out = {
-      .drops = NULL,
-      .init = rainContainerInit,
-      .show = rainContainerShow,
-      .run = rainContainerRun,
-      .exit = rainContainerExit,
-  };
+RainContainer *newRainContainer() {
+  RainContainer *out = malloc(sizeof(RainContainer));
+  out->base.init = rainContainerInit;
+  out->base.exit = rainContainerExit;
+  out->base.show = rainContainerShow;
+  out->base.run = rainContainerRun;
+  out->drops = NULL;
   return out;
 }
 
-void rainContainerInit(RainContainer *self) {
-  self->size = (size_t)getmaxx(stdscr) * 1.2;
-  self->drops = malloc(self->size * sizeof(Obj));
-  if (self->drops == NULL) {
+void rainContainerInit(WeatherContainer *self) {
+  RainContainer *cself = (RainContainer *)self; // Casted-self
+  cself->size = (size_t)getmaxx(stdscr) * 1.2;
+  cself->drops = malloc(cself->size * sizeof(Obj));
+  if (cself->drops == NULL) {
     fprintf(stderr, "Failed to allocate memoray for objects\n");
     exit(EXIT_FAILURE);
   }
-  for (size_t i = 0; i < self->size; i++) {
-    self->drops[i] = newObj(':', 2, 1, 0);
+  for (size_t i = 0; i < cself->size; i++) {
+    cself->drops[i] = newObj(':', 2, 1, 0);
   }
 }
 
-void rainContainerExit(RainContainer *self) {
-  free(self->drops);
-  self->drops = NULL;
-  self->size = 0;
+void rainContainerExit(WeatherContainer *self) {
+  RainContainer *cself = (RainContainer *)self;
+  free(cself->drops);
+  cself->drops = NULL;
+  cself->size = 0;
 }
 
 // Empty since rain doesn't need to print something on first run
-void rainContainerShow(RainContainer *self) {}
+void rainContainerShow(WeatherContainer *self) {}
 
-void rainContainerRun(RainContainer *self) {
-  for (size_t i = 0; i < self->size; i++) {
-    self->drops[i].show(&self->drops[i]);
-    self->drops[i].shift(&self->drops[i], true);
+void rainContainerRun(WeatherContainer *self) {
+  RainContainer *cself = (RainContainer *)self;
+  for (size_t i = 0; i < cself->size; i++) {
+    cself->drops[i].show(&cself->drops[i]);
+    cself->drops[i].shift(&cself->drops[i], true);
   }
 }

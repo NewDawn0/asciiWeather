@@ -3,6 +3,7 @@
 #include "obj.h"
 #include "rain.h"
 #include "util.h"
+#include "weather.h"
 #include <curses.h>
 #include <stdlib.h>
 #include <string.h>
@@ -51,12 +52,19 @@ void displayExit() {
 
 void displayLoop() {
   int ch;
-  RainContainer container = newRainContainer();
-  container.init(&container);
-  container.show(&container);
+  WeatherContainer *container = NULL;
+  switch (weather) {
+  case Rain:
+    container = (WeatherContainer *)newRainContainer();
+    break;
+  case Snow:
+    break;
+  }
+  container->init(container);
+  container->show(container);
   for (;;) {
     clear();
-    container.run(&container);
+    container->run(container);
     refresh();
     ch = getch();
     switch (ch) {
@@ -68,7 +76,7 @@ void displayLoop() {
       return;
     }
   }
-  container.exit(&container);
+  container->exit(container);
 }
 
 void menu() {
