@@ -36,9 +36,9 @@ void displayInit() {
   timeout(100); // 100ms for non blocking getch
   keypad(stdscr, TRUE);
   // Initialize colours
-  init_pair(1, COLOR_CYAN, COLOR_BLACK);
-  init_pair(2, COLOR_BLUE, COLOR_BLACK);
-  init_pair(3, COLOR_WHITE, COLOR_BLACK);
+  for (int i = 0; i < COLORS; i++) {
+    init_pair(i, i, COLOR_BLACK);
+  }
 }
 
 void displayExit() {
@@ -84,6 +84,8 @@ loopExit:
 void menu() {
   int ch;
   int choice = 0;
+  int randCol = 0;
+  short magenta[] = COL_RED;
   const int numChoices = len(MENU_CHOICES);
   const int height = numChoices + 2; // +2 for borders
   const int startX = (getmaxx(stdscr) - MENU_WIDTH) / 2;
@@ -91,7 +93,10 @@ void menu() {
   // Menu setup
   WINDOW *menuWin = newwin(height, MENU_WIDTH, startY, startX);
   keypad(menuWin, TRUE);
+  randCol = randRange(1, len(magenta) + 1);
+  wattron(menuWin, COLOR_PAIR(magenta[randCol]));
   box(menuWin, MENU_CHARS[0], MENU_CHARS[1]);
+  wattroff(menuWin, COLOR_PAIR(magenta[randCol]));
   mvwprintw(menuWin, 0, (MENU_WIDTH - strlen(MENU_TITLE)) / 2, "%s",
             MENU_TITLE);
 

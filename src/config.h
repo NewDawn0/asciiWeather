@@ -13,10 +13,22 @@ static inline const char *rainChars() {
   static const char out[2] = {'|', ':'};
   return out;
 }
-static inline const short *rainCols() {
-  static const short out[2] = {1, 2};
-  return out;
-}
+
+// COLS
+#define COL_BLUE                                                               \
+  { 4, 6, 12, 14, 32, 33, 38, 39, 68, 69, 81 }
+
+#define COL_RED                                                                \
+  { 1, 9, 160, 161, 196, 197 }
+
+#define COL_YELLOW                                                             \
+  { 3, 11, 184, 185, 186, 178, 179, 221, 222, 223, 226, 227, 228, 229 }
+
+#define COL_ORANGE                                                             \
+  { 166, 167, 202, 203, 208 }
+
+#define COL_PINK                                                               \
+  { 198, 199, 200, 201, 206, 207, 211, 212, 213, 219 }
 
 // Snow
 static inline const char *snowChars() {
