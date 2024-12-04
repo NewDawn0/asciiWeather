@@ -1,5 +1,7 @@
 #include "rain.h"
+#include "config.h"
 #include "obj.h"
+#include "util.h"
 #include "weather.h"
 #include <curses.h>
 #include <stddef.h>
@@ -28,8 +30,16 @@ void rainContainerInit(WeatherContainer *self) {
     fprintf(stderr, "Failed to allocate memoray for objects\n");
     exit(EXIT_FAILURE);
   }
+  int randType, speed;
+  char ch;
+  short col;
+  short rainCols[] = COL_BLUE;
   for (size_t i = 0; i < cself->size; i++) {
-    cself->drops[i] = newObj(':', 2, 1, 0);
+    randType = randRange(1, 3);
+    speed = (randType < 2) ? randRange(1, 2) : randRange(1, 3);
+    ch = (randType < 2) ? '|' : ':';
+    col = randRange(0, len(rainCols));
+    cself->drops[i] = newObj(ch, rainCols[col], speed, 0);
   }
 }
 
