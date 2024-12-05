@@ -2,9 +2,11 @@
 #include "config.h"
 #include "obj.h"
 #include "rain.h"
+#include "snow.h"
 #include "util.h"
 #include "weather.h"
 #include <curses.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -13,8 +15,10 @@ void displayInit();
 void displayExit();
 void displayLoop();
 void menu();
+void makeContainer(WeatherContainer **container);
 
 extern WeatherTypes weather;
+bool weatherChanged = false;
 
 Display newDisplay() {
   Display out = {
@@ -53,16 +57,16 @@ void displayExit() {
 void displayLoop() {
   int ch;
   WeatherContainer *container = NULL;
-  switch (weather) {
-  case Rain:
-    container = (WeatherContainer *)newRainContainer();
-    break;
-  case Snow:
-    break;
-  }
+  makeContainer(&container);
   container->init(container);
   container->show(container);
   for (;;) {
+    if (weatherChanged) {
+      makeContainer(&container);
+      container->init(container);
+      container->show(container);
+      weatherChanged = false;
+    }
     clear();
     container->run(container);
     refresh();
@@ -140,6 +144,18 @@ void menu() {
     }
   }
 loopExit:
+  weatherChanged = true;
   delwin(menuWin);
   weather = choice;
+}
+
+void makeContainer(WeatherContainer **container) {
+  switch (weather) {
+  case Rain:
+    *container = (WeatherContainer *)newRainContainer();
+    break;
+  case Snow:
+    *container = (WeatherContainer *)newSnowContainer();
+    break;
+  }
 }
