@@ -14,21 +14,27 @@ static inline const char *rainChars() {
   return out;
 }
 
-// COLS
-#define COL_BLUE                                                               \
+// Colours
+// Rain
+#define COL_RAIN_RAIN                                                          \
   { 4, 6, 12, 14, 32, 33, 38, 39, 68, 69, 81 }
 
-#define COL_RED                                                                \
-  { 1, 9, 160, 161, 196, 197 }
+// Snow
+#define COL_SNOW_SNOW                                                          \
+  { 0, 7, 15, 194, 195, 230, 231, 251, 252, 253, 254, 255 }
+#define COL_SNOW_LEAVES                                                        \
+  { 22, 23, 28, 29, 58, 59, 64, 65, 70, 71, 100, 101 }
+#define COL_SNOW_TRUNK                                                         \
+  { 94, 94, 130 }
 
-#define COL_YELLOW                                                             \
-  { 3, 11, 184, 185, 186, 178, 179, 221, 222, 223, 226, 227, 228, 229 }
+// Autumn tree
+#define COL_TREE_LEAVES                                                        \
+  {                                                                            \
+    1, 9, 197, 198, 202, 2023, 208, 209, 3, 11, 142, 221                       \
+  } // 4x Red colour, 4x Orange colour, 4x Yellow colour
 
-#define COL_ORANGE                                                             \
-  { 166, 167, 202, 203, 208 }
-
-#define COL_PINK                                                               \
-  { 198, 199, 200, 201, 206, 207, 211, 212, 213, 219 }
+#define COL_LOG                                                                \
+  { 94, 95, 96, 101, 130, 131, 172 }
 
 // Snow
 static inline const char *snowChars() {

@@ -8,6 +8,7 @@
 #define len(array) (sizeof(array) / sizeof((array)[0]))
 
 int randRange(int min, int max);
+int *randSel(int *arr, size_t size);
 
 void parseArgs(WeatherTypes *weather, int argc, char **argv);
 

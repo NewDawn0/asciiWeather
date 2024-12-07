@@ -24,7 +24,7 @@ RainContainer *newRainContainer() {
 
 void rainContainerInit(WeatherContainer *self) {
   RainContainer *cself = (RainContainer *)self; // Casted-self
-  cself->size = (size_t)getmaxx(stdscr) * 1.2;
+  cself->size = (size_t)(getmaxx(stdscr) * getmaxy(stdscr) / 20);
   cself->drops = malloc(cself->size * sizeof(Obj));
   if (cself->drops == NULL) {
     fprintf(stderr, "Failed to allocate memoray for objects\n");
@@ -33,7 +33,7 @@ void rainContainerInit(WeatherContainer *self) {
   int randType, speed;
   char ch;
   short col;
-  short rainCols[] = COL_BLUE;
+  short rainCols[] = COL_RAIN_RAIN;
   for (size_t i = 0; i < cself->size; i++) {
     randType = randRange(1, 3);
     speed = (randType < 2) ? randRange(1, 2) : randRange(1, 3);

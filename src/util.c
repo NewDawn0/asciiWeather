@@ -20,6 +20,18 @@ int randRange(int min, int max) {
   }
   return min + rand() % (max - min);
 }
+int *randSel(int *arr, size_t size) {
+  if (arr == NULL || size < 2) {
+    return arr;
+  }
+  for (size_t i = size - 1; i > 0; i--) {
+    size_t j = rand() % (i + 1);
+    int tmp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = tmp;
+  }
+  return arr;
+}
 
 void parseArgs(WeatherTypes *weather, int argc, char **argv) {
   if (argc == 1) {
