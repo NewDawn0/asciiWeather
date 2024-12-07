@@ -19,6 +19,7 @@ void makeContainer(WeatherContainer **container);
 
 extern WeatherTypes weather;
 bool weatherChanged = false;
+WeatherContainer *container = NULL;
 
 Display newDisplay() {
   Display out = {
@@ -31,7 +32,6 @@ Display newDisplay() {
 
 void displayInit() {
   srand(time(NULL));
-  initExternCfg();
   initscr();
   noecho();
   cbreak();
@@ -56,7 +56,6 @@ void displayExit() {
 
 void displayLoop() {
   int ch;
-  WeatherContainer *container = NULL;
   makeContainer(&container);
   container->init(container);
   container->show(container);
@@ -67,8 +66,8 @@ void displayLoop() {
       container->show(container);
       weatherChanged = false;
     }
-    clear();
-    container->run(container);
+    // clear();
+    // container->run(container);
     refresh();
     ch = getch();
     switch (ch) {
@@ -88,8 +87,6 @@ loopExit:
 void menu() {
   int ch;
   int choice = 0;
-  int randCol = 0;
-  short magenta[] = COL_RED;
   const int numChoices = len(MENU_CHOICES);
   const int height = numChoices + 2; // +2 for borders
   const int startX = (getmaxx(stdscr) - MENU_WIDTH) / 2;
@@ -97,10 +94,9 @@ void menu() {
   // Menu setup
   WINDOW *menuWin = newwin(height, MENU_WIDTH, startY, startX);
   keypad(menuWin, TRUE);
-  randCol = randRange(1, len(magenta) + 1);
-  wattron(menuWin, COLOR_PAIR(magenta[randCol]));
+  wattron(menuWin, COLOR_PAIR(2));
   box(menuWin, MENU_CHARS[0], MENU_CHARS[1]);
-  wattroff(menuWin, COLOR_PAIR(magenta[randCol]));
+  wattroff(menuWin, COLOR_PAIR(2));
   mvwprintw(menuWin, 0, (MENU_WIDTH - strlen(MENU_TITLE)) / 2, "%s",
             MENU_TITLE);
 
