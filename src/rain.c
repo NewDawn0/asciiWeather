@@ -9,7 +9,7 @@
 
 void rainContainerInit(WeatherContainer *self);
 void rainContainerExit(WeatherContainer *self);
-void rainContainerShow(WeatherContainer *self);
+void rainContainerShow(WeatherContainer *self, DrawContainer *drawfns);
 void rainContainerRun(WeatherContainer *self);
 
 RainContainer *newRainContainer() {
@@ -52,7 +52,7 @@ void rainContainerExit(WeatherContainer *self) {
 }
 
 // Empty since rain doesn't need to print something on first run
-void rainContainerShow(WeatherContainer *self) {}
+void rainContainerShow(WeatherContainer *self, DrawContainer *drawfns) {}
 
 void rainContainerRun(WeatherContainer *self) {
   RainContainer *cself = (RainContainer *)self;

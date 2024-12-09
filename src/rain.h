@@ -3,7 +3,6 @@
 
 #include "obj.h"
 #include "weather.h"
-#include <stddef.h>
 
 typedef struct rain_container_t {
   WeatherContainer base;

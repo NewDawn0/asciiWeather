@@ -11,9 +11,9 @@
 
 void snowContainerInit(WeatherContainer *self);
 void snowContainerExit(WeatherContainer *self);
-void snowContainerShow(WeatherContainer *self);
+void snowContainerShow(WeatherContainer *self, DrawContainer *drawfns);
 void snowContainerRun(WeatherContainer *self);
-void drawTree(size_t xPos);
+void drawTree(size_t xPos, DrawContainer *drawfns);
 
 SnowContainer *newSnowContainer() {
   SnowContainer *out = malloc(sizeof(SnowContainer));
@@ -60,10 +60,10 @@ void snowContainerExit(WeatherContainer *self) {
   cself->size = 0;
 }
 
-void snowContainerShow(WeatherContainer *self) {
+void snowContainerShow(WeatherContainer *self, DrawContainer *drawfns) {
   int screenX = getmaxx(stdscr);
   for (int i = 0; i < screenX / 10; i++) {
-    drawTree(randRange(0, screenX - 1));
+    drawTree(randRange(0, screenX - 1), drawfns);
   }
 }
 
@@ -75,7 +75,7 @@ void snowContainerRun(WeatherContainer *self) {
   }
 }
 
-void drawTree(size_t xPos) {
+void drawTree(size_t xPos, DrawContainer *drawfns) {
   struct Tree {
     int height;
     char leaves[5];
@@ -109,9 +109,7 @@ void drawTree(size_t xPos) {
   for (int y = 1; y <= tree.height; y++) {
     if (y >= (tree.height - trunk.height)) {
       randCol = treeTrunkCols[randRange(0, len(treeTrunkCols) - 1)];
-      attron(COLOR_PAIR(randCol));
-      mvaddch(maxY - (tree.height - y), xPos, trunk.ch);
-      attroff(COLOR_PAIR(randCol));
+      drawfns->add(drawfns, randCol, xPos, maxY - (tree.height - y), trunk.ch);
     } else {
       randOffset = randRange(-1, 1);
       maxLayer = (2 * y - 1) + randOffset;
@@ -142,9 +140,8 @@ void drawTree(size_t xPos) {
           }
         }
         randCol = treeLeavesCols[randRange(0, len(treeLeavesCols) - 1)];
-        attron(COLOR_PAIR(randCol));
-        mvaddch(maxY - (tree.height - y), startX + x, leaveCh);
-        attroff(COLOR_PAIR(randCol));
+        drawfns->add(drawfns, randCol, startX + x, maxY - (tree.height - y),
+                     leaveCh);
       }
     }
   }

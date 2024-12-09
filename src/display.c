@@ -1,5 +1,6 @@
 #include "display.h"
 #include "config.h"
+#include "fall.h"
 #include "obj.h"
 #include "rain.h"
 #include "snow.h"
@@ -37,8 +38,8 @@ void displayInit() {
   cbreak();
   curs_set(0);
   start_color();
-  timeout(100); // 100ms for non blocking getch
   keypad(stdscr, TRUE);
+  timeout(100);
   // Initialize colours
   for (int i = 0; i < COLORS; i++) {
     init_pair(i, i, COLOR_BLACK);
@@ -56,18 +57,23 @@ void displayExit() {
 
 void displayLoop() {
   int ch;
+  DrawContainer *drawfns = newDrawContainer();
   makeContainer(&container);
   container->init(container);
-  container->show(container);
+  container->show(container, drawfns);
+  refresh();
   for (;;) {
     if (weatherChanged) {
+      drawfns->clean(drawfns);
       makeContainer(&container);
       container->init(container);
-      container->show(container);
+      container->show(container, drawfns);
+      refresh();
       weatherChanged = false;
     }
-    // clear();
-    // container->run(container);
+    clear();
+    container->run(container);
+    drawfns->show(drawfns);
     refresh();
     ch = getch();
     switch (ch) {
@@ -81,6 +87,7 @@ void displayLoop() {
   }
 loopExit:
   container->exit(container);
+  drawfns->exit(drawfns);
   return;
 }
 

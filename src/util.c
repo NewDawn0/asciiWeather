@@ -1,5 +1,7 @@
 #include "util.h"
 #include "config.h"
+#include <curses.h>
+#include <stdarg.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,6 +13,10 @@ const char *BLUE = "\x1b[1;34m";
 const char *NC = "\x1b[0m";
 
 void help();
+void drawContainerExit(DrawContainer *self);
+void drawContainerShow(DrawContainer *self);
+void drawContainerAdd(DrawContainer *self, short col, int x, int y, char repr);
+void drawContainerClean(DrawContainer *self);
 
 int randRange(int min, int max) {
   if (min > max) {
@@ -20,6 +26,7 @@ int randRange(int min, int max) {
   }
   return min + rand() % (max - min);
 }
+
 int *randSel(int *arr, size_t size) {
   if (arr == NULL || size < 2) {
     return arr;
@@ -72,10 +79,49 @@ void help() {
       "\n%sUSAGE:%s\n" // BLUE, NC
       "   ascii-weather <weather>\n"
       "   ascii-weather <options>\n"
-      "\n%sOptions:%s\n"                              // BLUE, NC
-      "   <weather> -> Any of: %sRain%s | %sSnow%s\n" // CYAN, NC, CYAN, NC
+      "\n%sOptions:%s\n"                                            // BLUE, NC
+      "   <weather> -> Any of: %sRain%s | %sSnow%s | %sFall%s\n"    // CYAN, NC,
+                                                                    // CYAN, NC,
+                                                                    // CYAN, NC
       "   <options> -> %s-h%s | %s--help%s (Shows the help menu)\n" // CYAN, NC,
                                                                     // CYAN, NC
       ,
-      BLUE, NC, BLUE, NC, BLUE, NC, CYAN, NC, CYAN, NC, CYAN, NC, CYAN, NC);
+      BLUE, NC, BLUE, NC, BLUE, NC, CYAN, NC, CYAN, NC, CYAN, NC, CYAN, NC,
+      CYAN, NC);
 }
+
+DrawContainer *newDrawContainer() {
+  DrawContainer *out = malloc(sizeof(DrawContainer));
+  out->exit = drawContainerExit;
+  out->show = drawContainerShow;
+  out->add = drawContainerAdd;
+  out->clean = drawContainerClean;
+  out->idx = 0;
+  return out;
+}
+
+void drawContainerExit(DrawContainer *self) {
+  free(self);
+  self = NULL;
+}
+
+void drawContainerShow(DrawContainer *self) {
+  for (size_t i = 0; i < self->idx; i++) {
+    attron(COLOR_PAIR(self->objs[i].col));
+    mvprintw(self->objs[i].y, self->objs[i].x, "%c", self->objs[i].repr);
+    attroff(COLOR_PAIR(self->objs[i].col));
+  }
+}
+
+void drawContainerAdd(DrawContainer *self, short col, int x, int y, char repr) {
+  struct draw_obj_t obj = {
+      .col = col,
+      .x = x,
+      .y = y,
+      .repr = repr,
+  };
+  self->objs[self->idx] = obj;
+  self->idx++;
+}
+
+void drawContainerClean(DrawContainer *self) { self->idx = 0; }
