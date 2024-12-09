@@ -28,6 +28,7 @@ Obj newObj(char repr, short col, int forceX, int forceY) {
 void objShow(Obj *self) {
   attron(COLOR_PAIR(self->col));
   mvaddch(self->y, self->x, self->repr);
+  attroff(COLOR_PAIR(self->col));
 }
 
 void objShift(Obj *self, bool rand) {
