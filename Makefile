@@ -1,6 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wpedantic -Wextra -lncurses
-# TODO: Add -O3 flag
+CFLAGS = -O3 -Wall -Wpedantic -Wextra -lncurses
 
 build:
 	@echo "Building..."
