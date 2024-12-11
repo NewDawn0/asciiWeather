@@ -1,6 +1,5 @@
 #include "display.h"
 #include "config.h"
-#include "fall.h"
 #include "obj.h"
 #include "rain.h"
 #include "snow.h"
