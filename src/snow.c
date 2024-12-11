@@ -6,9 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define GREY_TONES                                                             \
-  { 102, 250, 240, 244 } // brick colours
-
 void snowContainerInit(WeatherContainer *self);
 void snowContainerExit(WeatherContainer *self);
 void snowContainerShow(WeatherContainer *self, DrawContainer *drawfns);
@@ -30,15 +27,15 @@ void snowContainerInit(WeatherContainer *self) {
   cself->size = (size_t)getmaxx(stdscr) * 1.5;
   cself->flakes = malloc(cself->size * sizeof(Obj));
   if (cself->flakes == NULL) {
-    fprintf(stderr, "Failed to allocate memoray for objects\n");
+    fprintf(stderr, "Failed to allocate memory for objects\n");
     exit(EXIT_FAILURE);
   }
-  int randType, speed;
+  unsigned char randType, speed;
   char ch;
   short col;
   short snowCols[] = COL_SNOW_SNOW;
   char types[] = {'*', '.', '+', 'o', '-', '~', '^', '"'};
-  for (size_t i = 0; i < cself->size; i++) {
+  for (unsigned int i = 0; i < cself->size; i++) {
     randType = randRange(0, 10);
     speed = (randType < 2) ? randRange(1, 2) : randRange(1, 3);
     if (randType <= 1) {
@@ -77,11 +74,11 @@ void snowContainerRun(WeatherContainer *self) {
 
 void drawTree(size_t xPos, DrawContainer *drawfns) {
   struct Tree {
-    int height;
+    unsigned char height;
     char leaves[5];
   };
   struct Trunk {
-    int height;
+    unsigned char height;
     char ch;
   };
   struct Tree tree = {
@@ -99,9 +96,9 @@ void drawTree(size_t xPos, DrawContainer *drawfns) {
       .height = 1,
       .ch = 'H',
   };
-  int maxY = getmaxy(stdscr);
+  const int maxY = getmaxy(stdscr);
   int x = 1;
-  int startX, maxLayer, randOffset, randCol;
+  unsigned char startX, maxLayer, randOffset, randCol;
   char leaveCh;
   short treeLeavesCols[] = COL_SNOW_LEAVES;
   short treeTrunkCols[] = COL_SNOW_TRUNK;

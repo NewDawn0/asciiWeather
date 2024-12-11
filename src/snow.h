@@ -8,7 +8,7 @@
 typedef struct snow_container_t {
   WeatherContainer base;
   Obj *flakes;
-  size_t size;
+  unsigned int size;
 } SnowContainer;
 
 SnowContainer *newSnowContainer();

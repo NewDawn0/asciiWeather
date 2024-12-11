@@ -7,7 +7,7 @@
 typedef struct rain_container_t {
   WeatherContainer base;
   Obj *drops;
-  size_t size;
+  unsigned int size;
 } RainContainer;
 
 RainContainer *newRainContainer();

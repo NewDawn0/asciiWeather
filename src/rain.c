@@ -30,7 +30,7 @@ void rainContainerInit(WeatherContainer *self) {
     fprintf(stderr, "Failed to allocate memoray for objects\n");
     exit(EXIT_FAILURE);
   }
-  int randType, speed;
+  unsigned char randType, speed;
   char ch;
   short col;
   short rainCols[] = COL_RAIN_RAIN;
