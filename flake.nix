@@ -24,6 +24,14 @@
               mkdir -p $out/bin
               cp ascii-weather $out/bin
             '';
+            meta = with pkgs.lib; {
+              description =
+                "An ascii screensaver displaying different weather types";
+              homepage = "https://github.com/NewDawn0/asciiWeather";
+              license = licenses.mit;
+              maintainers = [ NewDawn0 ];
+              platforms = platforms.all;
+            };
           };
         });
     };
