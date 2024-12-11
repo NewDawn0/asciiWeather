@@ -14,4 +14,5 @@ int main(int argc, char **argv) {
   main.init();
   main.loop();
   main.exit();
+  printf("Exiting...\n");
 }

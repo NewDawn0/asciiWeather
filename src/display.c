@@ -6,9 +6,11 @@
 #include "util.h"
 #include "weather.h"
 #include <curses.h>
+#include <signal.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/signal.h>
 #include <time.h>
 
 void displayInit();
@@ -16,9 +18,11 @@ void displayExit();
 void displayLoop();
 void menu();
 void makeContainer(WeatherContainer **container);
+void resizeHandler();
 
 extern WeatherTypes weather;
 bool weatherChanged = false;
+bool resized = false;
 WeatherContainer *container = NULL;
 
 Display newDisplay() {
@@ -43,6 +47,7 @@ void displayInit() {
   for (int i = 0; i < COLORS; i++) {
     init_pair(i, i, COLOR_BLACK);
   }
+  signal(SIGWINCH, resizeHandler);
 }
 
 void displayExit() {
@@ -51,7 +56,6 @@ void displayExit() {
   refresh();
   resetty();
   endwin();
-  printf("Exiting...\n");
 }
 
 void displayLoop() {
@@ -62,12 +66,26 @@ void displayLoop() {
   container->show(container, drawfns);
   refresh();
   for (;;) {
+    if (resized) {
+      displayInit();
+      displayExit();
+      // TODO: Reinstantiate drawfns, container
+      resized = false;
+      erase();
+      refresh();
+      drawfns->clean(drawfns);
+      container->exit(container);
+
+      drawfns = newDrawContainer();
+      makeContainer(&container);
+      container->init(container);
+      container->show(container, drawfns);
+    }
     if (weatherChanged) {
       drawfns->clean(drawfns);
       makeContainer(&container);
       container->init(container);
       container->show(container, drawfns);
-      refresh();
       weatherChanged = false;
     }
     clear();
@@ -163,3 +181,5 @@ void makeContainer(WeatherContainer **container) {
     break;
   }
 }
+
+void resizeHandler() { resized = true; }
