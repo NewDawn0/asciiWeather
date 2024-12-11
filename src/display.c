@@ -91,9 +91,9 @@ loopExit:
 }
 
 void menu() {
-  int ch;
   int choice = 0;
-  const int numChoices = len(MENU_CHOICES);
+  int numChoices;
+  MENU_CHOICES(&numChoices);
   const int height = numChoices + 2; // +2 for borders
   const int startX = (getmaxx(stdscr) - MENU_WIDTH) / 2;
   const int startY = (getmaxy(stdscr) - height) / 2;
@@ -101,7 +101,7 @@ void menu() {
   WINDOW *menuWin = newwin(height, MENU_WIDTH, startY, startX);
   keypad(menuWin, TRUE);
   wattron(menuWin, COLOR_PAIR(2));
-  box(menuWin, MENU_CHARS[0], MENU_CHARS[1]);
+  box(menuWin, MENU_CHARS()[0], MENU_CHARS()[1]);
   wattroff(menuWin, COLOR_PAIR(2));
   mvwprintw(menuWin, 0, (MENU_WIDTH - strlen(MENU_TITLE)) / 2, "%s",
             MENU_TITLE);
@@ -109,13 +109,15 @@ void menu() {
   // Check keys
   for (;;) {
     for (int i = 0; i < numChoices; i++) {
-      int spaces = MENU_WIDTH - strlen(MENU_CHOICES[i]) - 5;
+      int spaces = MENU_WIDTH - strlen(MENU_CHOICES(NULL)[i]) - 5;
       if (i == choice) {
         wattron(menuWin, A_REVERSE);
-        mvwprintw(menuWin, i + 1, 1, " * %s%*s", MENU_CHOICES[i], spaces, "");
+        mvwprintw(menuWin, i + 1, 1, " * %s%*s", MENU_CHOICES(NULL)[i], spaces,
+                  "");
       } else {
         wattroff(menuWin, A_REVERSE);
-        mvwprintw(menuWin, i + 1, 1, "   %s%*s", MENU_CHOICES[i], spaces, "");
+        mvwprintw(menuWin, i + 1, 1, "   %s%*s", MENU_CHOICES(NULL)[i], spaces,
+                  "");
       }
     }
     wrefresh(menuWin);

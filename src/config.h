@@ -2,17 +2,12 @@
 #define CONFIG_H
 
 // General
-static const int QUIT_KEY = 'q'; // QUit with q and ESC
-static const int QUIT_ESC = 27;
+#include <stddef.h>
+#define QUIT_KEY 'q' // Quit with q and ESC
+#define QUIT_ESC 27
 
 // Weather types
 typedef enum { Rain, Snow } WeatherTypes;
-
-// Rain
-static inline const char *rainChars() {
-  static const char out[2] = {'|', ':'};
-  return out;
-}
 
 // Colours
 // Rain
@@ -36,19 +31,23 @@ static inline const char *rainChars() {
 #define COL_LOG                                                                \
   { 94, 95, 96, 101, 130, 131, 172 }
 
-// Snow
-static inline const char *snowChars() {
-  static const char out[2] = {'*', '.'};
-  return out;
-}
 #define SNOW_COLS 3
 
 // Menu
-static const char MENU_OPEN = 'm';
-static const char MENU_CHARS[2] = {'|', '-'};
-static const char *MENU_CHOICES[2] = {"Rain", "Snow"};
-static const char MENU_UP = 'k';
-static const char MENU_DOWN = 'j';
+inline static const char *MENU_CHARS() {
+  static const char out[2] = {'|', '-'};
+  return out;
+}
+inline static const char **MENU_CHOICES(int *size) {
+  static const char *out[] = {"Rain", "Snow"};
+  if (size != NULL) {
+    *size = (sizeof(out) / sizeof(out[0]));
+  }
+  return out;
+}
+#define MENU_OPEN 'm'
+#define MENU_UP 'k'
+#define MENU_DOWN 'j'
 #define MENU_WIDTH 30                // u short
 #define MENU_TITLE "Select weather:" // char*
 

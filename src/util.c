@@ -41,6 +41,8 @@ int *randSel(int *arr, size_t size) {
 }
 
 void parseArgs(WeatherTypes *weather, int argc, char **argv) {
+  int menuLen;
+  MENU_CHOICES(&menuLen);
   if (argc == 1) {
     *weather = Rain; // Default to rain
   } else if (argc == 2) {
@@ -49,7 +51,7 @@ void parseArgs(WeatherTypes *weather, int argc, char **argv) {
     if (in(argv[1], xs, len(xs)) != -1) {
       help();
       exit(EXIT_SUCCESS);
-    } else if ((idx = in(argv[1], MENU_CHOICES, len(MENU_CHOICES))) != -1) {
+    } else if ((idx = in(argv[1], MENU_CHOICES(NULL), menuLen)) != -1) {
       *weather = idx;
     } else {
       printf("%sError:%s Unrecognized argument: %s\n", RED, NC, argv[1]);
@@ -64,7 +66,7 @@ void parseArgs(WeatherTypes *weather, int argc, char **argv) {
 }
 
 int in(char *x, const char **xs, size_t xsSize) {
-  for (int i = 0; i < xsSize; i++) {
+  for (size_t i = 0; i < xsSize; i++) {
     if (strcmp(x, xs[i]) == 0)
       return i;
   }
@@ -79,15 +81,12 @@ void help() {
       "\n%sUSAGE:%s\n" // BLUE, NC
       "   ascii-weather <weather>\n"
       "   ascii-weather <options>\n"
-      "\n%sOptions:%s\n"                                            // BLUE, NC
-      "   <weather> -> Any of: %sRain%s | %sSnow%s | %sFall%s\n"    // CYAN, NC,
-                                                                    // CYAN, NC,
-                                                                    // CYAN, NC
+      "\n%sOptions:%s\n"                               // BLUE, NC
+      "   <weather> -> Any of: %sRain%s | %sSnow%s \n" // CYAN, NC, CYAN, NC
       "   <options> -> %s-h%s | %s--help%s (Shows the help menu)\n" // CYAN, NC,
                                                                     // CYAN, NC
       ,
-      BLUE, NC, BLUE, NC, BLUE, NC, CYAN, NC, CYAN, NC, CYAN, NC, CYAN, NC,
-      CYAN, NC);
+      BLUE, NC, BLUE, NC, BLUE, NC, CYAN, NC, CYAN, NC, CYAN, NC, CYAN, NC);
 }
 
 DrawContainer *newDrawContainer() {

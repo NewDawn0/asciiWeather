@@ -101,8 +101,7 @@ void drawTree(size_t xPos, DrawContainer *drawfns) {
   };
   int maxY = getmaxy(stdscr);
   int x = 1;
-  int startX, maxLayer, randOffset;
-  int randIdx, randCol;
+  int startX, maxLayer, randOffset, randCol;
   char leaveCh;
   short treeLeavesCols[] = COL_SNOW_LEAVES;
   short treeTrunkCols[] = COL_SNOW_TRUNK;

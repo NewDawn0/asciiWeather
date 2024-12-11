@@ -8,7 +8,6 @@ void objShow(Obj *self);
 void objShift(Obj *self, bool rand);
 
 Obj newObj(char repr, short col, int forceX, int forceY) {
-  int typeRepr = randRange(1, 3); // Set type representation
   Obj out = {
       .x = randRange(0, getmaxx(stdscr) - 1),
       .y = randRange(0, getmaxy(stdscr) - 1),
