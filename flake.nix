@@ -14,23 +14,23 @@
       packages = eachSystem (system:
         let pkgs = mkPkgs system;
         in {
-          default = pkgs.stdenv.mkDerivation {
-            name = "ascii-weather";
+          default = pkgs.gccStdenv.mkDerivation {
+            pname = "ascii-weather";
             version = "1.0.0";
             src = ./.;
-            buildInputs = with pkgs; [ gnumake gcc ncurses ];
-            buildPhase = "make build";
-            installPhase = ''
-              mkdir -p $out/bin
-              cp ascii-weather $out/bin
-            '';
-            meta = with pkgs.lib; {
+            buildInputs = with pkgs; [ ncurses ];
+            installPhase = "install -D ascii-weather -t $out/bin";
+            meta = {
               description =
-                "An ascii screensaver displaying different weather types";
+                "An ASCII-based screensaver that shows various weather conditions";
+              longDescription = ''
+                This screensaver uses ASCII art to display different weather types.
+                It's a creative and simple way to keep your terminal lively while providing weather updates.
+              '';
               homepage = "https://github.com/NewDawn0/asciiWeather";
-              license = licenses.mit;
-              maintainers = [ NewDawn0 ];
-              platforms = platforms.all;
+              license = pkgs.lib.licenses.mit;
+              maintainers = with pkgs.lib.maintainers; [ NewDawn0 ];
+              platforms = pkgs.lib.platforms.all;
             };
           };
         });
