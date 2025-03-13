@@ -8,7 +8,7 @@
       ascii-weather = self.packages.${prev.system}.default;
     };
     packages = utils.lib.eachSystem { } (pkgs: {
-      default = pkgs.gccStdenv.mkDerivation {
+      default = pkgs.stdenv.mkDerivation {
         pname = "ascii-weather";
         version = "1.0.0";
         src = ./.;
